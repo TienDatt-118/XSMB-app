@@ -161,13 +161,13 @@ class _ThongKeScreenState extends State<ThongKeScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       decoration: BoxDecoration(
         color: isDark ? Colors.black45 : Colors.white,
-        border: Border.all(color: AppTheme.primaryRed.withOpacity(0.5)),
+        border: Border.all(color: AppTheme.primaryRed.withValues(alpha: 0.5)),
         borderRadius: BorderRadius.circular(4),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label, style: TextStyle(fontSize: 10, color: AppTheme.primaryRed, fontWeight: FontWeight.w600)),
+          Text(label, style: const TextStyle(fontSize: 10, color: AppTheme.primaryRed, fontWeight: FontWeight.w600)),
           const SizedBox(height: 2),
           Text(value, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
         ],
@@ -205,7 +205,7 @@ class _ThongKeScreenState extends State<ThongKeScreen> {
               _buildCell(_formatShortDate(result.drawDate), isDateCol: true, isDark: isDark),
               ...List.generate(100, (i) => _buildResultCell(result, i.toString().padLeft(2, '0'), isDark)),
             ]);
-          }).toList(),
+          }),
         ],
       ),
     );

@@ -172,15 +172,15 @@ class _LiveDrawScreenState extends State<LiveDrawScreen> {
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       decoration: BoxDecoration(
-        color: Colors.red.withOpacity(0.08),
+        color: Colors.red.withValues(alpha: 0.08),
         border: const Border(bottom: BorderSide(color: Colors.redAccent, width: 0.5)),
       ),
-      child: Row(
+      child: const Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           // Flashing red dot
-          const FlashingDot(),
-          const SizedBox(width: 8),
+          FlashingDot(),
+          SizedBox(width: 8),
           Text(
             'HỆ THỐNG ĐANG QUAY TRỰC TIẾP...',
             style: TextStyle(
@@ -249,7 +249,7 @@ class _LiveDrawScreenState extends State<LiveDrawScreen> {
         cardBorder = Border.all(color: AppTheme.accentGold, width: 2.0);
         cardShadow = [
           BoxShadow(
-            color: AppTheme.accentGold.withOpacity(0.2),
+            color: AppTheme.accentGold.withValues(alpha: 0.2),
             blurRadius: 20,
             spreadRadius: 4,
           ),
@@ -262,7 +262,7 @@ class _LiveDrawScreenState extends State<LiveDrawScreen> {
         cardBorder = Border.all(color: Colors.green.shade400, width: 1.5);
         cardShadow = [
           BoxShadow(
-            color: Colors.green.withOpacity(0.12),
+            color: Colors.green.withValues(alpha: 0.12),
             blurRadius: 12,
             spreadRadius: 2,
           ),
@@ -475,10 +475,10 @@ class _AnimatedStatusBadgeState extends State<_AnimatedStatusBadge>
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
             decoration: BoxDecoration(
-              color: widget.color.withOpacity(0.15),
+              color: widget.color.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
-                color: widget.color.withOpacity(0.3),
+                color: widget.color.withValues(alpha: 0.3),
                 width: 0.5,
               ),
             ),
@@ -542,7 +542,7 @@ class _FlashingDotState extends State<FlashingDot> with SingleTickerProviderStat
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
-              color: AppTheme.primaryRed.withOpacity(0.5),
+              color: AppTheme.primaryRed.withValues(alpha: 0.5),
               blurRadius: 6,
               spreadRadius: 2,
             ),

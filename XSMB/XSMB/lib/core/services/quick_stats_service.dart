@@ -145,7 +145,7 @@ class QuickStatsService {
         }
       }
       topTongDesc = docTong.body?.text.split('Thống kê cho thấy').last.trim() ?? '';
-      if (topTongDesc.isNotEmpty) topTongDesc = "Thống kê cho thấy $topTongDesc";
+      if (topTongDesc.isNotEmpty) topTongDesc = 'Thống kê cho thấy $topTongDesc';
     }
 
     if (chamSection.isNotEmpty) {
@@ -164,7 +164,7 @@ class QuickStatsService {
         }
       }
       topChamDesc = docCham.body?.text.split('Thống kê cho thấy').last.trim() ?? '';
-      if (topChamDesc.isNotEmpty) topChamDesc = "Thống kê cho thấy $topChamDesc";
+      if (topChamDesc.isNotEmpty) topChamDesc = 'Thống kê cho thấy $topChamDesc';
     }
 
     // Sort chart lists descending by days
@@ -399,7 +399,7 @@ class QuickStatsService {
     ganChamList.sort((a, b) => b.days.compareTo(a.days));
     final topCham = ganChamList.isNotEmpty ? ganChamList.first : null;
     final topChamDesc = topCham != null
-        ? "Thống kê cho thấy chạm đề lâu chưa xuất hiện nhất là chạm ${topCham.cham} (bao gồm 19 cặp số có chứa số ${topCham.cham}) đã ${topCham.days} ngày chưa ra."
+        ? 'Thống kê cho thấy chạm đề lâu chưa xuất hiện nhất là chạm ${topCham.cham} (bao gồm 19 cặp số có chứa số ${topCham.cham}) đã ${topCham.days} ngày chưa ra.'
         : '';
 
     final formattedDate =

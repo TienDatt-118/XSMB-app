@@ -24,7 +24,7 @@ class XsmbScraperService {
   Future<LotteryResult> fetchTodayResult() async {
     try {
       // Dùng URL của minhngoc vì cấu trúc DOM của họ cực kỳ ổn định và dễ bóc tách
-      final String targetUrl = 'https://www.minhngoc.net.vn/ket-qua-xo-so/mien-bac.html';
+      const String targetUrl = 'https://www.minhngoc.net.vn/ket-qua-xo-so/mien-bac.html';
       final String url = kIsWeb ? 'https://api.allorigins.win/raw?url=${Uri.encodeComponent(targetUrl)}' : targetUrl;
       final response = await _dio.get(url);
       

@@ -248,7 +248,7 @@ class _HistoryCardState extends State<_HistoryCard> {
           Container(
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
             decoration: isDb ? BoxDecoration(
-              color: isDark ? AppTheme.primaryRed.withOpacity(0.08) : const Color(0xFFFFF5F5),
+              color: isDark ? AppTheme.primaryRed.withValues(alpha: 0.08) : const Color(0xFFFFF5F5),
             ) : null,
             alignment: Alignment.center,
             child: Wrap(
@@ -380,7 +380,7 @@ class _HistoryCardState extends State<_HistoryCard> {
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: Colors.black.withValues(alpha: 0.03),
             blurRadius: 6,
             offset: const Offset(0, 2),
           )
@@ -399,7 +399,7 @@ class _HistoryCardState extends State<_HistoryCard> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
-                color: AppTheme.primaryRed.withOpacity(0.04),
+                color: AppTheme.primaryRed.withValues(alpha: 0.04),
                 borderRadius: _isExpanded
                     ? const BorderRadius.vertical(top: Radius.circular(8))
                     : BorderRadius.circular(8),
@@ -437,7 +437,7 @@ class _HistoryCardState extends State<_HistoryCard> {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
-                            color: AppTheme.primaryRed.withOpacity(0.08),
+                            color: AppTheme.primaryRed.withValues(alpha: 0.08),
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: const Text(

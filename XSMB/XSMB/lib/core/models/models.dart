@@ -40,7 +40,7 @@ class LotteryResult {
     required this.g7,
     this.isLive = false,
     required this.createdAt,
-  }) : this.drawDate = _normalizeDate(drawDate);
+  }) : drawDate = _normalizeDate(drawDate);
 
   // Flat list of all 27 numbers drawn (cached — computed once)
   late final List<String> allNumbers = _computeAllNumbers();

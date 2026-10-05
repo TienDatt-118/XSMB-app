@@ -136,7 +136,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final lotteryProv = context.watch<LotteryProvider>();
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
@@ -192,10 +191,13 @@ class _HomeScreenState extends State<HomeScreen> {
             onSelectToday: _onSelectToday,
             onSelectDate: _onSelectDate,
           ),
-          MissingDataBanner(
-            missingDates: lotteryProv.missingDates,
-            isSyncing: lotteryProv.isSyncingMissingData,
-            onSyncNow: () => lotteryProv.syncMissingDates(),
+          Selector<LotteryProvider, ({List<DateTime> dates, bool isSyncing})>(
+            selector: (_, prov) => (dates: prov.missingDates, isSyncing: prov.isSyncingMissingData),
+            builder: (context, data, _) => MissingDataBanner(
+              missingDates: data.dates,
+              isSyncing: data.isSyncing,
+              onSyncNow: () => context.read<LotteryProvider>().syncMissingDates(),
+            ),
           ),
           Expanded(
             child: RefreshIndicator(
@@ -210,41 +212,68 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    _buildLiveBanner(context, lotteryProv),
+                    Selector<LotteryProvider, bool>(
+                      selector: (_, prov) => prov.isLiveDrawing,
+                      builder: (context, isLive, _) => _buildLiveBanner(context, isLive),
+                    ),
                     const SizedBox(height: 8),
-              if (lotteryProv.isLoadingToday)
-                const Center(child: Padding(
-                  padding: EdgeInsets.all(32.0),
-                  child: CircularProgressIndicator(),
-                ))
-              else
-                _buildResultsTable(context, lotteryProv),
-              const SizedBox(height: 16),
-              _buildHeadTailTable(context, lotteryProv),
-              // KHỐI THỐNG KÊ NHANH CHO NGÀY (RỒNG BẠCH KIM HYBRID)
-              if (lotteryProv.quickStatsData != null || lotteryProv.isLoadingQuickStats) ...[
-                const SizedBox(height: 16),
-                QuickStatsSection(
-                  data: lotteryProv.quickStatsData ??
-                      const QuickStatsData(
-                        targetDate: '',
-                        lotoGanList: [],
-                        lotoFrequencyList: [],
-                        deGanList: [],
-                        ganTongList: [],
-                        ganChamList: [],
-                        topTongDesc: '',
-                        topChamDesc: '',
+                    Selector<LotteryProvider, ({bool isLoading, LotteryResult? result, bool isLive})>(
+                      selector: (_, prov) => (
+                        isLoading: prov.isLoadingToday,
+                        result: prov.todayResult,
+                        isLive: prov.isLiveDrawing,
                       ),
-                  isLoading: lotteryProv.isLoadingQuickStats,
+                      builder: (context, state, _) {
+                        if (state.isLoading) {
+                          return const Center(child: Padding(
+                            padding: EdgeInsets.all(32.0),
+                            child: CircularProgressIndicator(),
+                          ));
+                        }
+                        return _buildResultsTable(context, state.result, state.isLive);
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    Selector<LotteryProvider, ({bool isLoading, LotteryResult? result})>(
+                      selector: (_, prov) => (
+                        isLoading: prov.isLoadingDauDuoi,
+                        result: prov.todayResult,
+                      ),
+                      builder: (context, state, _) => _buildHeadTailTable(context, state.isLoading, state.result),
+                    ),
+                    // KHỐI THỐNG KÊ NHANH CHO NGÀY (RỒNG BẠCH KIM HYBRID)
+                    Selector<LotteryProvider, ({QuickStatsData? data, bool isLoading})>(
+                      selector: (_, prov) => (
+                        data: prov.quickStatsData,
+                        isLoading: prov.isLoadingQuickStats,
+                      ),
+                      builder: (context, stats, _) {
+                        if (stats.data == null && !stats.isLoading) return const SizedBox.shrink();
+                        return Padding(
+                          padding: const EdgeInsets.only(top: 16.0),
+                          child: QuickStatsSection(
+                            data: stats.data ??
+                                const QuickStatsData(
+                                  targetDate: '',
+                                  lotoGanList: [],
+                                  lotoFrequencyList: [],
+                                  deGanList: [],
+                                  ganTongList: [],
+                                  ganChamList: [],
+                                  topTongDesc: '',
+                                  topChamDesc: '',
+                                ),
+                            isLoading: stats.isLoading,
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                  ],
                 ),
-              ],
-              const SizedBox(height: 20),
-            ],
+              ),
+            ),
           ),
-        ),
-      ),
-      ),
       ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -279,8 +308,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   // --- Bảng Kết Quả & Live Banner ---
-  Widget _buildLiveBanner(BuildContext context, LotteryProvider provider) {
-    bool isLive = provider.isLiveDrawing;
+  Widget _buildLiveBanner(BuildContext context, bool isLive) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     Widget buildCountdownBox(String val, String label, bool isDark) {
@@ -372,7 +400,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       )
                     : ValueListenableBuilder<String>(
-                        valueListenable: provider.countdownNotifier,
+                        valueListenable: context.read<LotteryProvider>().countdownNotifier,
                         builder: (context, countdown, _) {
                           List<String> parts = countdown.split(':');
                           if (parts.length == 3) {
@@ -408,8 +436,8 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildResultsTable(BuildContext context, LotteryProvider provider) {
-    final result = provider.todayResult ?? LotteryResult(
+  Widget _buildResultsTable(BuildContext context, LotteryResult? currentResult, bool isLive) {
+    final result = currentResult ?? LotteryResult(
       drawDate: TimeUtils.formatToYYYYMMDD(_selectedDate),
       db: '', g1: '', g2: [], g3: [], g4: [], g5: [], g6: [], g7: [], createdAt: ''
     );
@@ -422,7 +450,7 @@ class _HomeScreenState extends State<HomeScreen> {
     TableRow buildRow(String label, List<String> numbers, int expectedCount, {bool isDb = false}) {
       if (numbers.isEmpty || (numbers.length == 1 && numbers[0].isEmpty)) {
          numbers = List.filled(expectedCount, '-----');
-      } else if (numbers.length < expectedCount && provider.isLiveDrawing) {
+      } else if (numbers.length < expectedCount && isLive) {
          numbers = List.from(numbers)..addAll(List.filled(expectedCount - numbers.length, '???'));
       } else if (numbers.length < expectedCount) {
          numbers = List.from(numbers)..addAll(List.filled(expectedCount - numbers.length, '-----'));
@@ -503,7 +531,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
-          if (result.db.isEmpty && !provider.isLiveDrawing)
+          if (result.db.isEmpty && !isLive)
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
@@ -527,7 +555,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   InkWell(
-                    onTap: () => provider.fetchResultByDate(_selectedDate),
+                    onTap: () => context.read<LotteryProvider>().fetchResultByDate(_selectedDate),
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                       decoration: BoxDecoration(
@@ -565,10 +593,10 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildHeadTailTable(BuildContext context, LotteryProvider provider) {
-    if (provider.isLoadingDauDuoi) return const SizedBox.shrink();
+  Widget _buildHeadTailTable(BuildContext context, bool isLoadingDauDuoi, LotteryResult? todayResult) {
+    if (isLoadingDauDuoi) return const SizedBox.shrink();
 
-    final result = provider.todayResult ?? LotteryResult(
+    final result = todayResult ?? LotteryResult(
       drawDate: TimeUtils.formatToYYYYMMDD(_selectedDate),
       db: '', g1: '', g2: [], g3: [], g4: [], g5: [], g6: [], g7: [], createdAt: ''
     );

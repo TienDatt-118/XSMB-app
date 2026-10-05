@@ -128,6 +128,12 @@ class _RollingNumberBallState extends State<RollingNumberBall>
 
   @override
   Widget build(BuildContext context) {
+    return RepaintBoundary(
+      child: _buildBallContent(context),
+    );
+  }
+
+  Widget _buildBallContent(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final isEmpty = _displayVal.isEmpty;
     final isRolling = widget.isRolling;
@@ -153,12 +159,12 @@ class _RollingNumberBallState extends State<RollingNumberBall>
                   ? Colors.grey.shade800
                   : Colors.amber.shade50,
               border: Border.all(
-                color: AppTheme.accentGold.withOpacity(0.5 + pulseVal * 0.5),
+                color: AppTheme.accentGold.withValues(alpha: 0.5 + pulseVal * 0.5),
                 width: 2.0,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: AppTheme.accentGold.withOpacity(0.2 + pulseVal * 0.4),
+                  color: AppTheme.accentGold.withValues(alpha: 0.2 + pulseVal * 0.4),
                   blurRadius: 8 + pulseVal * 8,
                   spreadRadius: 1 + pulseVal * 3,
                 ),
@@ -169,7 +175,7 @@ class _RollingNumberBallState extends State<RollingNumberBall>
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: AppTheme.accentGold.withOpacity(0.6 + pulseVal * 0.4),
+                color: AppTheme.accentGold.withValues(alpha: 0.6 + pulseVal * 0.4),
                 fontFamily: 'monospace',
               ),
             ),
@@ -189,7 +195,7 @@ class _RollingNumberBallState extends State<RollingNumberBall>
         gradient: AppTheme.luckyGradient,
         boxShadow: [
           BoxShadow(
-            color: AppTheme.primaryRed.withOpacity(0.5),
+            color: AppTheme.primaryRed.withValues(alpha: 0.5),
             blurRadius: 12,
             spreadRadius: 3,
           ),
@@ -215,14 +221,14 @@ class _RollingNumberBallState extends State<RollingNumberBall>
         boxShadow: _wasRolling
             ? [
                 BoxShadow(
-                  color: Colors.green.withOpacity(0.25),
+                  color: Colors.green.withValues(alpha: 0.25),
                   blurRadius: 10,
                   spreadRadius: 2,
                 ),
               ]
             : [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
+                  color: Colors.black.withValues(alpha: 0.05),
                   blurRadius: 4,
                   spreadRadius: 0,
                 ),
@@ -318,7 +324,7 @@ class _ShimmerPlaceholderState extends State<_ShimmerPlaceholder>
                     ],
             ),
             border: Border.all(
-              color: widget.isDark ? Colors.white10 : Colors.black.withOpacity(0.06),
+              color: widget.isDark ? Colors.white10 : Colors.black.withValues(alpha: 0.06),
               width: 1,
             ),
           ),

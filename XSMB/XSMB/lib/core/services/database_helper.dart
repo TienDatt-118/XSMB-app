@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:csv/csv.dart';
 import 'package:path/path.dart';
@@ -142,7 +143,7 @@ class DatabaseHelper {
       await batch.commit(noResult: true);
     } catch (e) {
       // Failed to seed or file not found
-      print("DatabaseHelper _seedDatabaseFromCSV Error: $e");
+      debugPrint('DatabaseHelper _seedDatabaseFromCSV Error: $e');
     }
   }
 
@@ -156,7 +157,7 @@ class DatabaseHelper {
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
     } catch (e) {
-      print("Insert result skipped: $e");
+      debugPrint('Insert result skipped: $e');
     }
   }
 
@@ -186,7 +187,7 @@ class DatabaseHelper {
         orderBy: 'draw_date DESC',
       );
     } catch (e) {
-      print("Get results by date range error: $e");
+      debugPrint('Get results by date range error: $e');
       return [];
     }
   }
@@ -202,7 +203,7 @@ class DatabaseHelper {
         offset: offset,
       );
     } catch (e) {
-      print("Get results history skipped: $e");
+      debugPrint('Get results history skipped: $e');
       return [];
     }
   }

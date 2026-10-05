@@ -20,7 +20,7 @@ class AdminPanelSheet extends StatelessWidget {
         borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.3),
+            color: Colors.black.withValues(alpha: 0.3),
             blurRadius: 20,
             spreadRadius: 2,
           )
@@ -40,7 +40,7 @@ class AdminPanelSheet extends StatelessWidget {
                   height: 4,
                   margin: const EdgeInsets.only(bottom: 16),
                   decoration: BoxDecoration(
-                    color: Colors.grey.withOpacity(0.3),
+                    color: Colors.grey.withValues(alpha: 0.3),
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -122,7 +122,7 @@ class AdminPanelSheet extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: isDark ? Colors.black38 : Colors.grey[100],
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.grey.withOpacity(0.2)),
+                    border: Border.all(color: Colors.grey.withValues(alpha: 0.2)),
                   ),
                   child: Row(
                     children: [
@@ -185,7 +185,7 @@ class AdminPanelSheet extends StatelessWidget {
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
           border: Border.all(
-            color: isDark ? Colors.white10 : Colors.black.withOpacity(0.08),
+            color: isDark ? Colors.white10 : Colors.black.withValues(alpha: 0.08),
             width: 1,
           ),
           borderRadius: BorderRadius.circular(12),

@@ -1,5 +1,6 @@
 /// Data models for strategy-based deep analysis.
 /// Mirrors the Laravel $excelData structure from phan-tich.blade.php
+library;
 
 class StrategyHistoryRow {
   final String date;   // dd/MM/yyyy

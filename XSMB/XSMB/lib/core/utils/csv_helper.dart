@@ -9,7 +9,7 @@ class CsvHelper {
   static Future<void> appendResultToCsv(LotteryResult result) async {
     try {
       final directory = await getApplicationDocumentsDirectory();
-      final path = "${directory.path}/xsmb_database.csv";
+      final path = '${directory.path}/xsmb_database.csv';
       final file = File(path);
 
       List<dynamic> row = [
@@ -27,32 +27,32 @@ class CsvHelper {
       String csvData = const ListToCsvConverter().convert([row]);
 
       if (!await file.exists()) {
-        List<dynamic> header = ["Ngay", "DB", "G1", "G2", "G3", "G4", "G5", "G6", "G7"];
+        List<dynamic> header = ['Ngay', 'DB', 'G1', 'G2', 'G3', 'G4', 'G5', 'G6', 'G7'];
         String headerCsv = const ListToCsvConverter().convert([header]);
         await file.writeAsString('$headerCsv\n$csvData');
       } else {
         await file.writeAsString('\n$csvData', mode: FileMode.append);
       }
       
-      debugPrint("Đã tự động lưu kết quả ngày ${result.drawDate} vào CSV: $path");
+      debugPrint('Đã tự động lưu kết quả ngày ${result.drawDate} vào CSV: $path');
     } catch (e) {
-      debugPrint("Lỗi khi ghi CSV: $e");
+      debugPrint('Lỗi khi ghi CSV: $e');
     }
   }
 
   static Future<void> shareCsvFile() async {
     try {
       final directory = await getApplicationDocumentsDirectory();
-      final path = "${directory.path}/xsmb_database.csv";
+      final path = '${directory.path}/xsmb_database.csv';
       final file = File(path);
 
       if (await file.exists()) {
         await Share.shareXFiles([XFile(path)], text: 'Dữ liệu XSMB CSV');
       } else {
-        debugPrint("File CSV chưa tồn tại để chia sẻ!");
+        debugPrint('File CSV chưa tồn tại để chia sẻ!');
       }
     } catch (e) {
-      debugPrint("Lỗi khi chia sẻ CSV: $e");
+      debugPrint('Lỗi khi chia sẻ CSV: $e');
     }
   }
 }

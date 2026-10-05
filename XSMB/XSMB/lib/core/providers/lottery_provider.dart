@@ -181,7 +181,7 @@ class LotteryProvider extends ChangeNotifier {
       _syncRecentMissingDays();
     } catch (e) {
       _isOffline = true;
-      debugPrint("Fetch today result error: $e");
+      debugPrint('Fetch today result error: $e');
     } finally {
       _isLoadingToday = false;
       notifyListeners();
@@ -203,7 +203,7 @@ class LotteryProvider extends ChangeNotifier {
              await CsvHelper.appendResultToCsv(result);
              hasNewData = true;
           } catch (e) {
-             debugPrint("Sync date $dateStr failed: $e");
+             debugPrint('Sync date $dateStr failed: $e');
           }
         }
       }
@@ -211,7 +211,7 @@ class LotteryProvider extends ChangeNotifier {
         fetchHistoryRange(now.subtract(const Duration(days: 30)), now);
       }
     } catch (e) {
-      debugPrint("Sync missing days error: $e");
+      debugPrint('Sync missing days error: $e');
     }
   }
 
@@ -240,7 +240,7 @@ class LotteryProvider extends ChangeNotifier {
     } catch (e) {
       _todayResult = null; // Clear data on error
       _isOffline = true;
-      debugPrint("Fetch result by date error: $e");
+      debugPrint('Fetch result by date error: $e');
     } finally {
       _isLoadingToday = false;
       notifyListeners();
@@ -261,7 +261,7 @@ class LotteryProvider extends ChangeNotifier {
         localHistory: history,
       );
     } catch (e) {
-      debugPrint("Error fetching quick stats: $e");
+      debugPrint('Error fetching quick stats: $e');
     } finally {
       _isLoadingQuickStats = false;
       notifyListeners();
@@ -320,7 +320,7 @@ class LotteryProvider extends ChangeNotifier {
           _missingDates.remove(d);
           notifyListeners();
         } catch (e) {
-          debugPrint("Sync missing date $dateStr failed: $e");
+          debugPrint('Sync missing date $dateStr failed: $e');
         }
       }
       final now = TimeUtils.nowVN;
@@ -331,7 +331,7 @@ class LotteryProvider extends ChangeNotifier {
         fetchResultByDate(curDate);
       }
     } catch (e) {
-      debugPrint("syncMissingDates error: $e");
+      debugPrint('syncMissingDates error: $e');
     } finally {
       _isSyncingMissingData = false;
       notifyListeners();
@@ -394,19 +394,19 @@ class LotteryProvider extends ChangeNotifier {
         Map<String, int> counts = {};
         for (var fullNum in r.allNumbers) {
           if (fullNum.length >= 2) {
-             final num = fullNum.substring(fullNum.length - 2);
-             counts[num] = (counts[num] ?? 0) + 1;
+             final pair = fullNum.substring(fullNum.length - 2);
+             counts[pair] = (counts[pair] ?? 0) + 1;
           }
         }
-        counts.forEach((num, count) {
+        counts.forEach((digits, count) {
           if (count >= 2) {
-            if (!cau2NhayList.any((e) => e.number == num)) {
+            if (!cau2NhayList.any((e) => e.number == digits)) {
               String displayDate = r.drawDate;
               try {
                 final dt = DateTime.parse(r.drawDate);
                 displayDate = '${dt.day.toString().padLeft(2, '0')}/${dt.month.toString().padLeft(2, '0')}/${dt.year}';
               } catch (_) {}
-              cau2NhayList.add(Cau2Nhay(number: num, date: displayDate));
+              cau2NhayList.add(Cau2Nhay(number: digits, date: displayDate));
             }
           }
         });
@@ -419,7 +419,7 @@ class LotteryProvider extends ChangeNotifier {
         cau2Nhay: cau2NhayList.take(5).toList(),
       );
     } catch (e) {
-      debugPrint("Calculate Cau Stats Error: $e");
+      debugPrint('Calculate Cau Stats Error: $e');
       _cauStats = CauStats(cauLoto: [], cauDacBiet: [], cau2Nhay: []);
     }
   }
@@ -436,7 +436,7 @@ class LotteryProvider extends ChangeNotifier {
       _isOffline = false;
     } catch (e) {
       _isOffline = true;
-      debugPrint("Fetch analysis error: $e");
+      debugPrint('Fetch analysis error: $e');
     } finally {
       _isLoadingAnalysis = false;
       notifyListeners();
@@ -458,16 +458,16 @@ class LotteryProvider extends ChangeNotifier {
       // Sort oldest to newest for analysis
       validResults.sort((a, b) => a.drawDate.compareTo(b.drawDate));
 
-      final tt = _analyzeBoSo("Bộ To To (TT)", (s) => int.parse(s[0]) >= 5 && int.parse(s[1]) >= 5, validResults);
-      final cc = _analyzeBoSo("Bộ Chẵn Chẵn (CC)", (s) => int.parse(s[0]) % 2 == 0 && int.parse(s[1]) % 2 == 0, validResults);
-      final tc = _analyzeBoSo("Bộ To Chẵn (TC)", (s) => int.parse(s[0]) >= 5 && int.parse(s[1]) % 2 == 0, validResults);
-      final ct = _analyzeBoSo("Bộ Chẵn To (CT)", (s) => int.parse(s[0]) % 2 == 0 && int.parse(s[1]) >= 5, validResults);
-      final du1 = _analyzeBoSo("Bộ Dư 1", (s) => int.parse(s) % 3 == 1, validResults);
-      final b0024 = _analyzeBoSo("Bộ 00-24", (s) => int.parse(s) >= 0 && int.parse(s) <= 24, validResults);
+      final tt = _analyzeBoSo('Bộ To To (TT)', (s) => int.parse(s[0]) >= 5 && int.parse(s[1]) >= 5, validResults);
+      final cc = _analyzeBoSo('Bộ Chẵn Chẵn (CC)', (s) => int.parse(s[0]) % 2 == 0 && int.parse(s[1]) % 2 == 0, validResults);
+      final tc = _analyzeBoSo('Bộ To Chẵn (TC)', (s) => int.parse(s[0]) >= 5 && int.parse(s[1]) % 2 == 0, validResults);
+      final ct = _analyzeBoSo('Bộ Chẵn To (CT)', (s) => int.parse(s[0]) % 2 == 0 && int.parse(s[1]) >= 5, validResults);
+      final du1 = _analyzeBoSo('Bộ Dư 1', (s) => int.parse(s) % 3 == 1, validResults);
+      final b0024 = _analyzeBoSo('Bộ 00-24', (s) => int.parse(s) >= 0 && int.parse(s) <= 24, validResults);
 
       _deepAnalysisData = DeepAnalysisData(analyses: [tt, cc, tc, ct, du1, b0024]);
     } catch (e) {
-      debugPrint("Deep analysis error: $e");
+      debugPrint('Deep analysis error: $e');
     } finally {
       _isLoadingDeepAnalysis = false;
       notifyListeners();
@@ -477,9 +477,9 @@ class LotteryProvider extends ChangeNotifier {
   BoSoAnalysis _analyzeBoSo(String name, bool Function(String) condition, List<LotteryResult> history) {
     int currentInterval = 0;
     int maxGan = 0;
-    String maxGanFrom = "";
-    String maxGanTo = "";
-    String lastHitDate = history.isNotEmpty ? history.first.drawDate : "";
+    String maxGanFrom = '';
+    String maxGanTo = '';
+    String lastHitDate = history.isNotEmpty ? history.first.drawDate : '';
     List<GanInterval> allGans = [];
     int hitCount = 0;
 
@@ -511,7 +511,7 @@ class LotteryProvider extends ChangeNotifier {
     List<GanInterval> historicalGans = allGans.where((g) => g.days >= 15).toList();
     
     double ratio = history.isNotEmpty ? (hitCount / history.length * 100) : 0.0;
-    String ratioStr = ratio.toStringAsFixed(2) + "%";
+    String ratioStr = '${ratio.toStringAsFixed(2)}%';
 
     return BoSoAnalysis(
       name: name,
@@ -592,7 +592,7 @@ class LotteryProvider extends ChangeNotifier {
         maxFrequency: maxFreq,
       );
     } catch (e) {
-      debugPrint("Fetch Thong Ke Error: $e");
+      debugPrint('Fetch Thong Ke Error: $e');
       _thongKeData = null;
     } finally {
       _isLoadingAnalysis = false;
@@ -612,7 +612,7 @@ class LotteryProvider extends ChangeNotifier {
       _isOffline = false;
     } catch (e) {
       _isOffline = true;
-      debugPrint("Fetch lo gan list error: $e");
+      debugPrint('Fetch lo gan list error: $e');
     } finally {
       _isLoadingLoGan = false;
       notifyListeners();
@@ -631,7 +631,7 @@ class LotteryProvider extends ChangeNotifier {
       _isOffline = false;
     } catch (e) {
       _isOffline = true;
-      debugPrint("Fetch dau duoi stats error: $e");
+      debugPrint('Fetch dau duoi stats error: $e');
     } finally {
       _isLoadingDauDuoi = false;
       notifyListeners();
@@ -701,7 +701,7 @@ class LotteryProvider extends ChangeNotifier {
       _isOffline = false;
     } catch (e) {
       _isOffline = true;
-      debugPrint("Fetch history range error: $e");
+      debugPrint('Fetch history range error: $e');
     } finally {
       _isLoadingHistory = false;
       notifyListeners();
@@ -731,7 +731,7 @@ class LotteryProvider extends ChangeNotifier {
       _isOffline = false;
     } catch (e) {
       _isOffline = true;
-      debugPrint("Fetch history error: $e");
+      debugPrint('Fetch history error: $e');
     } finally {
       _isLoadingHistory = false;
       notifyListeners();
@@ -1148,7 +1148,7 @@ class LotteryProvider extends ChangeNotifier {
       _yesterdayTop = _extractLoTop(yesterdayRes, _loTopFreqsCache!);
 
     } catch (e) {
-      debugPrint("Error fetchLoTopData: $e");
+      debugPrint('Error fetchLoTopData: $e');
     } finally {
       _isLoadingLoTop = false;
       notifyListeners();
@@ -1180,22 +1180,34 @@ class LotteryProvider extends ChangeNotifier {
       }
     }
 
-    addHit("GĐB", result.db);
-    if (result.g1.isNotEmpty) addHit("G1", result.g1);
-    for (var n in result.g2) addHit("G2", n);
-    for (var n in result.g3) addHit("G3", n);
-    for (var n in result.g4) addHit("G4", n);
-    for (var n in result.g5) addHit("G5", n);
-    for (var n in result.g6) addHit("G6", n);
-    for (var n in result.g7) addHit("G7", n);
+    addHit('GĐB', result.db);
+    if (result.g1.isNotEmpty) addHit('G1', result.g1);
+    for (var n in result.g2) {
+      addHit('G2', n);
+    }
+    for (var n in result.g3) {
+      addHit('G3', n);
+    }
+    for (var n in result.g4) {
+      addHit('G4', n);
+    }
+    for (var n in result.g5) {
+      addHit('G5', n);
+    }
+    for (var n in result.g6) {
+      addHit('G6', n);
+    }
+    for (var n in result.g7) {
+      addHit('G7', n);
+    }
 
     List<LoTopItem> list = [];
-    hits.forEach((num, count) {
+    hits.forEach((numberStr, count) {
       list.add(LoTopItem(
-        number: num,
+        number: numberStr,
         hitCount: count,
-        prizes: prizes[num] ?? [],
-        totalHistoricalHits: totalFreqs[num] ?? 0,
+        prizes: prizes[numberStr] ?? [],
+        totalHistoricalHits: totalFreqs[numberStr] ?? 0,
       ));
     });
 
@@ -1357,16 +1369,16 @@ class LotteryProvider extends ChangeNotifier {
   static String _clsMod5(String v) => 'DU${int.parse(v) % 5}';
   static String _clsBongDau(String v) {
     int r = int.parse(v[0]) % 5;
-    return 'DAU${r}${r + 5}';
+    return 'DAU$r${r + 5}';
   }
   static String _clsBongDuoi(String v) {
     int r = int.parse(v[1]) % 5;
-    return 'DUOI${r}${r + 5}';
+    return 'DUOI$r${r + 5}';
   }
   static String _clsBongTong(String v) {
     int s = (int.parse(v[0]) + int.parse(v[1])) % 10;
     int r = s % 5;
-    return 'TONG${r}${r + 5}';
+    return 'TONG$r${r + 5}';
   }
   static String _clsBongHieu(String v) {
     int d = (int.parse(v[0]) - int.parse(v[1])).abs();
@@ -1486,7 +1498,9 @@ class LotteryProvider extends ChangeNotifier {
     final rev = sorted.reversed.toList();
     Map<String, int> result = {};
     Set<String> found = {};
-    for (int i = 0; i < 100; i++) result[i.toString().padLeft(2, '0')] = rev.length;
+    for (int i = 0; i < 100; i++) {
+      result[i.toString().padLeft(2, '0')] = rev.length;
+    }
 
     for (int i = 0; i < rev.length; i++) {
       String db = rev[i].db;

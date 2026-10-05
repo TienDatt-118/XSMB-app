@@ -1,13 +1,13 @@
 
-import "lib/core/models/models.dart";
-import "lib/core/models/deep_analysis_model.dart";
+import 'lib/core/models/models.dart';
+import 'lib/core/models/deep_analysis_model.dart';
 
 BoSoAnalysis analyzeBoSo(String name, bool Function(String) condition, List<LotteryResult> history) {
   int currentInterval = 0;
   int maxGan = 0;
-  String maxGanFrom = "";
-  String maxGanTo = "";
-  String lastHitDate = history.isNotEmpty ? history.first.drawDate : "";
+  String maxGanFrom = '';
+  String maxGanTo = '';
+  String lastHitDate = history.isNotEmpty ? history.first.drawDate : '';
   List<GanInterval> allGans = [];
   int hitCount = 0;
 
@@ -41,7 +41,7 @@ BoSoAnalysis analyzeBoSo(String name, bool Function(String) condition, List<Lott
   List<GanInterval> historicalGans = allGans.where((g) => g.days >= 15).toList();
   
   double ratio = history.isNotEmpty ? (hitCount / history.length * 100) : 0.0;
-  String ratioStr = ratio.toStringAsFixed(2) + "%";
+  String ratioStr = '${ratio.toStringAsFixed(2)}%';
 
   return BoSoAnalysis(
     name: name,

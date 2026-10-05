@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -138,10 +137,9 @@ class _SoiCauScreenState extends State<SoiCauScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.watch<LotteryProvider>();
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final result = provider.soiCauResult;
-    final isLoading = provider.isLoadingSoiCau;
+    final result = context.select<LotteryProvider, SoiCauResult?>((p) => p.soiCauResult);
+    final isLoading = context.select<LotteryProvider, bool>((p) => p.isLoadingSoiCau);
 
     return Scaffold(
       appBar: AppBar(
@@ -211,7 +209,7 @@ class _SoiCauScreenState extends State<SoiCauScreen> {
 
             // 6. Khu vực hiển thị chi tiết cầu đã chọn (Inline ShowCauArea như web)
             if (_activeInlineBridge != null) ...[
-              _buildInlineBridgeDetail(isDark, provider),
+              _buildInlineBridgeDetail(isDark),
               const SizedBox(height: 14),
             ],
 
@@ -1075,11 +1073,14 @@ class _SoiCauScreenState extends State<SoiCauScreen> {
   }
 
   // Khối hiển thị chi tiết đường chạy cầu khi chọn 1 cầu
-  Widget _buildInlineBridgeDetail(bool isDark, LotteryProvider provider) {
-    final detail = provider.currentCauDetail;
-    final isLoading = provider.isLoadingCauDetail;
+  Widget _buildInlineBridgeDetail(bool isDark) {
+    return Selector<LotteryProvider, ({CauDetail? detail, bool isLoading})>(
+      selector: (_, p) => (detail: p.currentCauDetail, isLoading: p.isLoadingCauDetail),
+      builder: (context, data, _) {
+        final detail = data.detail;
+        final isLoading = data.isLoading;
 
-    return Container(
+        return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: isDark ? const Color(0xFF2B303A) : const Color(0xFFFFF9E6),
@@ -1183,6 +1184,8 @@ class _SoiCauScreenState extends State<SoiCauScreen> {
           ],
         ],
       ),
+    );
+      },
     );
   }
 

@@ -7,7 +7,7 @@ import 'notification_service.dart';
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
-  debugPrint("Handling a background message: ${message.messageId}");
+  debugPrint('Handling a background message: ${message.messageId}');
 }
 
 class FirebaseMessagingService {
@@ -64,7 +64,7 @@ class FirebaseMessagingService {
       });
 
     } catch (e) {
-      debugPrint("Firebase init error: $e");
+      debugPrint('Firebase init error: $e');
     }
   }
 }

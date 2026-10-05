@@ -91,7 +91,7 @@ class _LoGanScreenState extends State<LoGanScreen> with SingleTickerProviderStat
         children: [
           // TAB 1: Hôm qua
           _buildDayTab(
-            title: "LÔ TOP - ${formatDay(yesterday)}/${yesterday.year}",
+            title: 'LÔ TOP - ${formatDay(yesterday)}/${yesterday.year}',
             headerBgColor: isDark ? const Color(0xFF3E2723) : const Color(0xFFFFF3E0),
             headerTextColor: isDark ? Colors.orangeAccent : const Color(0xFFE65100),
             isLoading: provider.isLoadingLoTop,
@@ -101,7 +101,7 @@ class _LoGanScreenState extends State<LoGanScreen> with SingleTickerProviderStat
 
           // TAB 2: Hôm nay
           _buildDayTab(
-            title: "LÔ TOP HÔM NAY - ${formatDay(now)}/${now.year}",
+            title: 'LÔ TOP HÔM NAY - ${formatDay(now)}/${now.year}',
             headerBgColor: isDark ? const Color(0xFF1B5E20) : const Color(0xFFE8F5E9),
             headerTextColor: isDark ? Colors.greenAccent : const Color(0xFF2E7D32),
             isLoading: provider.isLoadingLoTop,
@@ -112,7 +112,7 @@ class _LoGanScreenState extends State<LoGanScreen> with SingleTickerProviderStat
 
           // TAB 3: Ngày mai (Dự đoán từ Lô Gan)
           _buildTomorrowTab(
-            title: "DỰ ĐOÁN LÔ TOP - ${formatDay(tomorrow)}/${tomorrow.year}",
+            title: 'DỰ ĐOÁN LÔ TOP - ${formatDay(tomorrow)}/${tomorrow.year}',
             headerBgColor: isDark ? const Color(0xFF311B92) : const Color(0xFFEDE7F6),
             headerTextColor: isDark ? Colors.deepPurpleAccent : const Color(0xFF4527A0),
             isLoading: provider.isLoadingLoGan,
@@ -163,12 +163,12 @@ class _LoGanScreenState extends State<LoGanScreen> with SingleTickerProviderStat
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        isToday ? "Chưa có kết quả hôm nay" : "Không có dữ liệu",
+                        isToday ? 'Chưa có kết quả hôm nay' : 'Không có dữ liệu',
                         style: const TextStyle(fontSize: 16, color: Colors.grey),
                       ),
                       if (isToday)
                         const Text(
-                          "Kết quả sẽ cập nhật sau 18:15",
+                          'Kết quả sẽ cập nhật sau 18:15',
                           style: TextStyle(fontSize: 12, color: Colors.grey),
                         )
                     ],
@@ -178,7 +178,7 @@ class _LoGanScreenState extends State<LoGanScreen> with SingleTickerProviderStat
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: DataTable(
-                      headingRowColor: MaterialStateProperty.all(isDark ? Colors.black54 : Colors.black87),
+                      headingRowColor: WidgetStateProperty.all(isDark ? Colors.black54 : Colors.black87),
                       headingTextStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
                       dataRowMinHeight: 45,
                       dataRowMaxHeight: 55,
@@ -223,7 +223,7 @@ class _LoGanScreenState extends State<LoGanScreen> with SingleTickerProviderStat
                                 spacing: 4,
                                 runSpacing: 4,
                                 children: item.prizes.map((p) {
-                                  final isDB = p == "GĐB";
+                                  final isDB = p == 'GĐB';
                                   return Container(
                                     padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                                     decoration: BoxDecoration(
@@ -298,7 +298,7 @@ class _LoGanScreenState extends State<LoGanScreen> with SingleTickerProviderStat
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: DataTable(
-                      headingRowColor: MaterialStateProperty.all(isDark ? const Color(0xFF311B92) : const Color(0xFF4527A0)),
+                      headingRowColor: WidgetStateProperty.all(isDark ? const Color(0xFF311B92) : const Color(0xFF4527A0)),
                       headingTextStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
                       dataRowMinHeight: 45,
                       dataRowMaxHeight: 55,

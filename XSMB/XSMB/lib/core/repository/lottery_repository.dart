@@ -29,7 +29,7 @@ class LotteryRepository {
       await _dbHelper.insertResult(result.toMap());
       return result;
     } catch (e) {
-      debugPrint("Repository getTodayResult Scraper Error, loading cache: $e");
+      debugPrint('Repository getTodayResult Scraper Error, loading cache: $e');
       
       // Fallback to SQLite cache (load newest cached result)
       final cachedResults = await _dbHelper.getResultsHistory(limit: 1);
@@ -67,7 +67,7 @@ class LotteryRepository {
           }
         }
       } catch (csvError) {
-        debugPrint("CSV Fallback error: $csvError");
+        debugPrint('CSV Fallback error: $csvError');
       }
       
       // If absolutely no local cache, throw network exception
@@ -82,7 +82,7 @@ class LotteryRepository {
       final db = await _dbHelper.database;
       await db.delete('lottery_results', where: 'draw_date = ?', whereArgs: [date]);
     } catch (e) {
-      debugPrint("Cleanup error: $e");
+      debugPrint('Cleanup error: $e');
     }
   }
 
@@ -102,7 +102,7 @@ class LotteryRepository {
       await _dbHelper.insertResult(result.toMap());
       return result;
     } catch (e) {
-      debugPrint("Repository getResultByDate Error: $e");
+      debugPrint('Repository getResultByDate Error: $e');
       throw ApiException(message: 'Không thể lấy dữ liệu cho ngày này.');
     }
   }
@@ -169,7 +169,7 @@ class LotteryRepository {
           }
         }
       } catch (e) {
-        debugPrint("CSV Fallback error in getHistoryByDateRange: $e");
+        debugPrint('CSV Fallback error in getHistoryByDateRange: $e');
       }
     }
     

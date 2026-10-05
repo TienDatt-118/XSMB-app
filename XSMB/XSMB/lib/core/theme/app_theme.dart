@@ -46,7 +46,7 @@ class AppTheme {
   // Box Shadows
   static List<BoxShadow> glassShadow = [
     BoxShadow(
-      color: Colors.black.withOpacity(0.08),
+      color: Colors.black.withValues(alpha: 0.08),
       blurRadius: 16,
       spreadRadius: -4,
       offset: const Offset(0, 8),
@@ -141,7 +141,7 @@ class AppTheme {
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
-          side: BorderSide(color: Colors.white24, width: 1),
+          side: const BorderSide(color: Colors.white24, width: 1),
         ),
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(

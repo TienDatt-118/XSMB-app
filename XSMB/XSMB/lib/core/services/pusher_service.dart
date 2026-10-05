@@ -27,25 +27,25 @@ class PusherService {
       );
       await _pusher!.connect();
     } catch (e) {
-      debugPrint("Pusher Init Error: $e");
+      debugPrint('Pusher Init Error: $e');
     }
   }
 
   void _onConnectionStateChange(dynamic currentState, dynamic previousState) {
-    debugPrint("Pusher Connection State changed from $previousState to $currentState");
-    _isConnected = (currentState.toString().toLowerCase() == "connected");
+    debugPrint('Pusher Connection State changed from $previousState to $currentState');
+    _isConnected = (currentState.toString().toLowerCase() == 'connected');
   }
 
   void _onError(String message, int? code, dynamic e) {
-    debugPrint("Pusher Error: $message (Code: $code) - Exception: $e");
+    debugPrint('Pusher Error: $message (Code: $code) - Exception: $e');
   }
 
   void _onSubscriptionSucceeded(String channelName, dynamic data) {
-    debugPrint("Pusher Subscribed Succeeded: $channelName - Data: $data");
+    debugPrint('Pusher Subscribed Succeeded: $channelName - Data: $data');
   }
 
   void _onEvent(PusherEvent event) {
-    debugPrint("Pusher Received Event: ${event.eventName} on ${event.channelName}");
+    debugPrint('Pusher Received Event: ${event.eventName} on ${event.channelName}');
     if (event.channelName == AppConfig.liveDrawChannel && event.eventName == AppConfig.liveDrawEvent) {
       try {
         final decoded = jsonDecode(event.data);
@@ -55,7 +55,7 @@ class PusherService {
           }
         }
       } catch (e) {
-        debugPrint("Error parsing Pusher Event Data: $e");
+        debugPrint('Error parsing Pusher Event Data: $e');
       }
     }
   }

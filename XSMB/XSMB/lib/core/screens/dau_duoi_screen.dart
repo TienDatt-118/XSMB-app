@@ -182,7 +182,7 @@ class _DauDuoiScreenState extends State<DauDuoiScreen> with SingleTickerProvider
                               borderRadius: BorderRadius.circular(4),
                               child: LinearProgressIndicator(
                                 value: item.count / maxVal,
-                                backgroundColor: Colors.grey.withOpacity(0.1),
+                                backgroundColor: Colors.grey.withValues(alpha: 0.1),
                                 color: isHead ? AppTheme.primaryRed : AppTheme.accentGold,
                                 minHeight: 6,
                               ),

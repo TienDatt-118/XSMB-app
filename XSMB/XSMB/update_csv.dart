@@ -1,3 +1,4 @@
+// ignore_for_file: avoid_print
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:html/parser.dart' show parse;
@@ -111,7 +112,9 @@ void main() async {
       row.addAll(g7);
       
       // Đảm bảo đủ 28 cột như CSV cũ
-      while (row.length < 28) row.add('');
+      while (row.length < 28) {
+        row.add('');
+      }
       
       return row.take(28).toList();
     } catch (e) {
@@ -120,7 +123,7 @@ void main() async {
   }
 
   // Cào từ ngày tiếp theo đến hôm nay
-  DateTime current = lastDate.add(Duration(days: 1));
+  DateTime current = lastDate.add(const Duration(days: 1));
   while (current.isBefore(targetDate) || current.isAtSameMomentAs(targetDate)) {
     print('Đang cào dữ liệu ngày: ${current.year}-${current.month}-${current.day}...');
     final row = await scrapeDate(current);
@@ -132,8 +135,8 @@ void main() async {
       print('=> Không có dữ liệu hoặc lỗi mạng.');
     }
     
-    current = current.add(Duration(days: 1));
-    await Future.delayed(Duration(milliseconds: 500)); // Tránh bị block
+    current = current.add(const Duration(days: 1));
+    await Future.delayed(const Duration(milliseconds: 500)); // Tránh bị block
   }
   
   print('Hoàn thành cập nhật CSV trên máy tính!');

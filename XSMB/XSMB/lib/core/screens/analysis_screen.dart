@@ -25,7 +25,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
   String _activeLineField = 'gdb_first2';
   bool _showNumberSets = false;
   int _ganFilterMin = 150;
-  Map<String, int> _touchedPieIndices = {};
+  final Map<String, int> _touchedPieIndices = {};
 
   @override
   void initState() {
@@ -70,8 +70,11 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
     if (picked != null) {
       setState(() {
         DateTime pickedUtc = DateTime.utc(picked.year, picked.month, picked.day);
-        if (isFrom) _fromDate = pickedUtc;
-        else _toDate = pickedUtc;
+        if (isFrom) {
+          _fromDate = pickedUtc;
+        } else {
+          _toDate = pickedUtc;
+        }
       });
       if (context.mounted) {
         final provider = context.read<LotteryProvider>();
@@ -280,8 +283,8 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
       decoration: BoxDecoration(
         color: isDark ? const Color(0xFF2C2C2C) : Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withOpacity(0.3)),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 8)],
+        border: Border.all(color: color.withValues(alpha: 0.3)),
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 8)],
       ),
       child: Column(
         children: [
@@ -345,8 +348,8 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
       decoration: BoxDecoration(
         color: isDark ? const Color(0xFF2C2C2C) : Colors.white,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: AppTheme.primaryRed.withOpacity(0.2)),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.03), blurRadius: 4)],
+        border: Border.all(color: AppTheme.primaryRed.withValues(alpha: 0.2)),
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 4)],
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -505,7 +508,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
-        border: Border.all(color: AppTheme.primaryRed.withOpacity(0.3)),
+        border: Border.all(color: AppTheme.primaryRed.withValues(alpha: 0.3)),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
@@ -572,7 +575,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                   color: active ? AppTheme.primaryRed : (isDark ? const Color(0xFF2C2C2C) : Colors.white),
                   border: Border.all(color: active ? AppTheme.primaryRed : Colors.grey.shade300, width: 2),
                   borderRadius: BorderRadius.circular(6),
-                  boxShadow: active ? [BoxShadow(color: AppTheme.primaryRed.withOpacity(0.3), blurRadius: 10)] : null,
+                  boxShadow: active ? [BoxShadow(color: AppTheme.primaryRed.withValues(alpha: 0.3), blurRadius: 10)] : null,
                 ),
                 child: Text(s.name, style: TextStyle(
                   fontWeight: FontWeight.w800, fontSize: 12,
@@ -600,7 +603,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
         color: isDark ? const Color(0xFF2C2C2C) : Colors.white,
         border: Border.all(color: Colors.grey.shade300),
         borderRadius: BorderRadius.circular(4),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)],
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10)],
       ),
       padding: const EdgeInsets.all(4),
       child: SingleChildScrollView(
@@ -743,7 +746,9 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
     int globalMax = 1;
     for (var c in configs) {
       final f = strategy.fields[c['key'] as String]!;
-      for (var v in f.gan.values) if (v > globalMax) globalMax = v;
+      for (var v in f.gan.values) {
+        if (v > globalMax) globalMax = v;
+      }
     }
 
     return GridView.count(
@@ -1011,7 +1016,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
         color: isDark ? const Color(0xFF2C2C2C) : Colors.white,
         border: Border.all(color: Colors.grey.shade200),
         borderRadius: BorderRadius.circular(8),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)],
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10)],
       ),
       child: Column(
         children: [
@@ -1250,7 +1255,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
         color: isDark ? const Color(0xFF2C2C2C) : Colors.white,
         border: Border.all(color: const Color(0xFFCCE5FF)),
         borderRadius: BorderRadius.circular(8),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)],
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10)],
       ),
       child: Column(
         children: [
@@ -1334,7 +1339,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
         color: isDark ? const Color(0xFF2C2C2C) : const Color(0xFFFFFDFD),
         border: Border.all(color: const Color(0xFFF0E6D2)),
         borderRadius: BorderRadius.circular(8),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 10)],
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10)],
       ),
       child: Column(
         children: [
@@ -1354,8 +1359,8 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                       keyboardType: TextInputType.number,
                       textAlign: TextAlign.center,
                       style: const TextStyle(fontWeight: FontWeight.bold, color: AppTheme.primaryRed, fontSize: 13),
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                      decoration: const InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
                         border: OutlineInputBorder(borderSide: BorderSide(color: AppTheme.primaryRed)),
                         enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: AppTheme.primaryRed)),
                         isDense: true,
@@ -1383,15 +1388,15 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.green),
                 borderRadius: BorderRadius.circular(4),
-                boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 3)],
+                boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 3)],
               ),
               child: Row(
                 children: [
                   Container(
                     width: 35,
                     alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFFFFAFA),
+                    decoration: const BoxDecoration(
+                      color: Color(0xFFFFFAFA),
                       border: Border(right: BorderSide(color: Colors.green)),
                     ),
                     child: Text(e.key, style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 14, color: AppTheme.primaryRed, fontFamily: 'Consolas')),

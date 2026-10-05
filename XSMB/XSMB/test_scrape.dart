@@ -1,3 +1,4 @@
+// ignore_for_file: avoid_print
 import 'package:dio/dio.dart';
 import 'package:html/parser.dart' show parse;
 
@@ -15,7 +16,7 @@ void main() async {
     if (elements.isEmpty) {
       print('giaidb not found');
     } else {
-      print('giaidb found: ' + elements.first.text);
+      print('giaidb found: ${elements.first.text}');
     }
   } catch (e) {
     print('Error: $e');

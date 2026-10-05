@@ -58,13 +58,13 @@ class NotificationService {
       }
       _isInitialized = true;
     } catch (e) {
-      debugPrint("Notification Initialization Error: $e");
+      debugPrint('Notification Initialization Error: $e');
     }
   }
 
   // Handle click on notification
   void _onNotificationTapped(NotificationResponse response) {
-    debugPrint("Notification tapped: ${response.payload}");
+    debugPrint('Notification tapped: ${response.payload}');
     // We can handle payload routing in routes or navigation holder
   }
 
@@ -108,7 +108,7 @@ class NotificationService {
         payload: payload,
       );
     } catch (e) {
-      debugPrint("Error showing notification: $e");
+      debugPrint('Error showing notification: $e');
     }
   }
 }
