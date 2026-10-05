@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "272052309996",
+    "project_id": "xsmb-ba709",
+    "storage_bucket": "xsmb-ba709.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:272052309996:android:3f99a1b63b952cbf483ac9",
+        "android_client_info": {
+          "package_name": "com.example.xsmb"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvq5Q4VL3E9vz1GIjsBavYJf6TraqJIWE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

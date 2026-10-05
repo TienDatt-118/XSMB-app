@@ -1,0 +1,44 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Flutter/Dart/Pub related
+**/.dart_tool/
+**/.flutter-plugins-dependencies
+**/.pub-cache/
+**/.pub/
+**/build/
+**/coverage/
+**/doc/api/
+**/ios/Flutter/.last_build_id
+**/ios/.symlinks/
+**/.gradle/
+
+# Android Studio / IntelliJ / VS Code
+**/.idea/
+**/*.iml
+**/*.ipr
+**/*.iws
+**/.vscode/
+
+# Build artifacts
+**/android/app/debug
+**/android/app/profile
+**/android/app/release
+app.*.symbols
+app.*.map.json
+
+# Large scraped/dumped HTML data files
+local_*.html
+**/local_*.html
+minhngoc.html
+**/minhngoc.html
+xsmb_home.html
+**/xsmb_home.html
+xoso.html
+**/xoso.html

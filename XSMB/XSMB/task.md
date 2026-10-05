@@ -1,0 +1,43 @@
+# Implementation Checklist - XSMB Siêu Tốc
+
+- [x] Configure `pubspec.yaml` with all dependencies
+- [x] Implement Core Infrastructure
+  - [x] App Config (`app_config.dart`)
+  - [x] App Constants (`app_constants.dart`)
+  - [x] Dark/Light Theme & Glassmorphism (`app_theme.dart`)
+  - [x] API Exceptions & Client (`api_client.dart`, `api_exceptions.dart`)
+- [x] Implement Services Layer
+  - [x] SQLite helper (`database_helper.dart`)
+  - [x] Local Storage & Secure Storage (`storage_service.dart`)
+  - [x] WebSocket Listener (`pusher_service.dart`)
+  - [x] Notification Manager (`notification_service.dart`)
+- [x] Implement Models & Repository Layer
+  - [x] Data models DTOs (`models.dart`)
+  - [x] Lottery Repository (`lottery_repository.dart`)
+  - [x] Admin Repository (`admin_repository.dart`)
+- [x] Implement State Providers
+  - [x] Lottery state & timer & ws integration (`lottery_provider.dart`)
+  - [x] Admin actions provider (`admin_provider.dart`)
+- [x] Create Custom Premium Widgets
+  - [x] Glassmorphic Card container (`glass_card.dart`)
+  - [x] Animated Rolling Number balls (`rolling_number.dart`)
+  - [x] Skeleton loaders (`shimmer_loading.dart`)
+  - [x] Charts wrapper (`custom_charts.dart`)
+- [x] Implement Application Screens & Routes
+  - [x] Main Navigation holder (`navigation_holder.dart`)
+  - [x] Home screen (`home_screen.dart`)
+  - [x] Live draw screen (`live_draw_screen.dart`)
+  - [x] Deep statistics dashboard (`analysis_screen.dart`)
+  - [x] Lo gan list & search (`lo_gan_screen.dart`)
+  - [x] Head/tail frequency board (`dau_duoi_screen.dart`)
+  - [x] Historical draws list (`history_screen.dart`)
+  - [x] Administrative action sheet (`admin_panel_sheet.dart`)
+  - [x] Tinh chỉnh giao diện ứng dụng (Home, Lo Gan, History)
+  - [x] Sửa lỗi hiển thị và lỗi biên dịch ứng dụng (Missing brackets, invalid parameters, MaterialColor shades)
+  - [x] Routing configuration (`app_routes.dart`)
+- [x] Update Entry Point & Android Settings
+  - [x] App runner entry (`main.dart`)
+  - [x] Android Permissions & Launch Settings (`AndroidManifest.xml`)
+- [x] Verify Build & Integrity
+  - [x] Fetch dependencies (`flutter pub get`)
+  - [x] Test compile dry-run
