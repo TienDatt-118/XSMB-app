@@ -1552,11 +1552,11 @@ class LotteryProvider extends ChangeNotifier {
         searchNum: _soiCauSearchNum,
       );
 
-      // 2. Fallback to local SQLite matrix computation if web returns null
+      // 2. Fallback to local SQLite matrix computation on background isolate if web returns null
       if (result == null) {
         final historyRaw = await _repository.dbHelper.getResultsHistory(limit: 100);
         final history = historyRaw.map((e) => LotteryResult.fromMap(e)).toList();
-        result = _soiCauService.computeFromLocal(
+        result = await _soiCauService.computeFromLocalAsync(
           history: history,
           date: targetDate,
           limitDays: _soiCauLimit,
@@ -1595,11 +1595,11 @@ class LotteryProvider extends ChangeNotifier {
         isLon: _soiCauIsLon,
       );
 
-      // Offline fallback if web detail is unavailable
+      // Offline fallback on background isolate if web detail is unavailable
       if (_currentCauDetail == null) {
         final historyRaw = await _repository.dbHelper.getResultsHistory(limit: 100);
         final history = historyRaw.map((e) => LotteryResult.fromMap(e)).toList();
-        _currentCauDetail = _soiCauService.computeCauDetailOffline(
+        _currentCauDetail = await _soiCauService.computeCauDetailOfflineAsync(
           history: history,
           position: position,
           date: targetDate,

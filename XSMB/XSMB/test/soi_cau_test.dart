@@ -114,8 +114,35 @@ void main() {
       expect(res.cauList.isNotEmpty, isTrue);
     });
 
+    test('computeFromLocalAsync computes valid bridges in isolate', () async {
+      final res = await service.computeFromLocalAsync(
+        history: sampleHistory,
+        date: DateTime(2026, 10, 5),
+        limitDays: 3,
+        exactLimit: 0,
+        isLon: true,
+      );
+
+      expect(res.totalBridges, greaterThan(0));
+      expect(res.matrixDigits.length, equals(107));
+      expect(res.cauList.isNotEmpty, isTrue);
+    });
+
     test('computeCauDetailOffline creates valid history road', () {
       final detail = service.computeCauDetailOffline(
+        history: sampleHistory,
+        position: '55x95',
+        date: DateTime(2026, 10, 5),
+        limitDays: 3,
+      );
+
+      expect(detail.position, equals('55x95'));
+      expect(detail.predictedNumbers.isNotEmpty, isTrue);
+      expect(detail.historyDays.length, equals(3));
+    });
+
+    test('computeCauDetailOfflineAsync creates valid history road in isolate', () async {
+      final detail = await service.computeCauDetailOfflineAsync(
         history: sampleHistory,
         position: '55x95',
         date: DateTime(2026, 10, 5),

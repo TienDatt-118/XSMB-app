@@ -72,5 +72,16 @@ void main() {
       expect(stats.targetDate, equals('05/10/2026'));
       expect(stats.lotoFrequencyList, isNotNull);
     });
+
+    test('QuickStatsService computeFromLocalAsync runs on background isolate', () async {
+      final service = QuickStatsService();
+      final stats = await service.computeFromLocalAsync(
+        targetDate: DateTime(2026, 10, 5),
+        allHistory: [sample1, sample2],
+      );
+
+      expect(stats.targetDate, equals('05/10/2026'));
+      expect(stats.lotoFrequencyList, isNotNull);
+    });
   });
 }

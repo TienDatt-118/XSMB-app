@@ -220,11 +220,38 @@ class QuickStatsService {
     return list;
   }
 
-  /// Offline local computation from SQLite database history
+  /// Offline local computation from SQLite database history (synchronous)
   QuickStatsData computeFromLocal({
     required DateTime targetDate,
     required List<LotteryResult> allHistory,
   }) {
+    return computeFromLocalStatic(
+      QuickStatsComputeParams(
+        targetDate: targetDate,
+        allHistory: allHistory,
+      ),
+    );
+  }
+
+  /// Offline local computation on background Isolate using Flutter's compute()
+  Future<QuickStatsData> computeFromLocalAsync({
+    required DateTime targetDate,
+    required List<LotteryResult> allHistory,
+  }) async {
+    return compute(
+      _computeQuickStatsWorker,
+      QuickStatsComputeParams(
+        targetDate: targetDate,
+        allHistory: allHistory,
+      ),
+    );
+  }
+
+  /// Static worker function for offline QuickStats calculation
+  static QuickStatsData computeFromLocalStatic(QuickStatsComputeParams params) {
+    final targetDate = params.targetDate;
+    final allHistory = params.allHistory;
+
     final dateStr =
         "${targetDate.year.toString().padLeft(4, '0')}-${targetDate.month.toString().padLeft(2, '0')}-${targetDate.day.toString().padLeft(2, '0')}";
 
@@ -419,7 +446,7 @@ class QuickStatsService {
     );
   }
 
-  /// Hybrid helper: Tries web first; falls back to local computation
+  /// Hybrid helper: Tries web first; falls back to local computation on background isolate
   Future<QuickStatsData> getQuickStats({
     required DateTime date,
     required List<LotteryResult> localHistory,
@@ -430,7 +457,24 @@ class QuickStatsService {
       return webData;
     }
 
-    // 2. Fallback to local computation
-    return computeFromLocal(targetDate: date, allHistory: localHistory);
+    // 2. Fallback to background isolate computation
+    return computeFromLocalAsync(targetDate: date, allHistory: localHistory);
   }
 }
+
+/// Top-level worker for compute() running QuickStats in background isolate
+QuickStatsData _computeQuickStatsWorker(QuickStatsComputeParams params) {
+  return QuickStatsService.computeFromLocalStatic(params);
+}
+
+/// Parameter container for QuickStats isolate execution
+class QuickStatsComputeParams {
+  final DateTime targetDate;
+  final List<LotteryResult> allHistory;
+
+  const QuickStatsComputeParams({
+    required this.targetDate,
+    required this.allHistory,
+  });
+}
+

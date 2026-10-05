@@ -413,7 +413,7 @@ class SoiCauService {
     );
   }
 
-  /// Compute Soi Cau completely offline from SQLite history
+  /// Compute Soi Cau completely offline from SQLite history (synchronous)
   SoiCauResult computeFromLocal({
     required List<LotteryResult> history,
     required DateTime date,
@@ -424,6 +424,57 @@ class SoiCauService {
     bool isLon = true,
     String? searchNum,
   }) {
+    return computeFromLocalStatic(
+      SoiCauComputeParams(
+        history: history,
+        date: date,
+        limitDays: limitDays,
+        exactLimit: exactLimit,
+        nhay: nhay,
+        isDb: isDb,
+        isLon: isLon,
+        searchNum: searchNum,
+      ),
+    );
+  }
+
+  /// Compute Soi Cau in a background isolate using Flutter's compute()
+  Future<SoiCauResult> computeFromLocalAsync({
+    required List<LotteryResult> history,
+    required DateTime date,
+    int limitDays = 5,
+    int exactLimit = 0,
+    int nhay = 1,
+    bool isDb = false,
+    bool isLon = true,
+    String? searchNum,
+  }) async {
+    return compute(
+      _computeSoiCauWorker,
+      SoiCauComputeParams(
+        history: history,
+        date: date,
+        limitDays: limitDays,
+        exactLimit: exactLimit,
+        nhay: nhay,
+        isDb: isDb,
+        isLon: isLon,
+        searchNum: searchNum,
+      ),
+    );
+  }
+
+  /// Static worker function for computing Soi Cau offline
+  static SoiCauResult computeFromLocalStatic(SoiCauComputeParams params) {
+    final history = params.history;
+    final date = params.date;
+    final limitDays = params.limitDays;
+    final exactLimit = params.exactLimit;
+    final nhay = params.nhay;
+    final isDb = params.isDb;
+    final isLon = params.isLon;
+    final searchNum = params.searchNum;
+
     final targetDateStr =
         '${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
 
@@ -645,7 +696,7 @@ class SoiCauService {
     );
   }
 
-  /// Generate offline historical road for a bridge (when network is unavailable)
+  /// Generate offline historical road for a bridge (synchronous)
   CauDetail computeCauDetailOffline({
     required List<LotteryResult> history,
     required String position,
@@ -655,6 +706,52 @@ class SoiCauService {
     bool isDb = false,
     int nhay = 1,
   }) {
+    return computeCauDetailOfflineStatic(
+      CauDetailComputeParams(
+        history: history,
+        position: position,
+        date: date,
+        limitDays: limitDays,
+        isLon: isLon,
+        isDb: isDb,
+        nhay: nhay,
+      ),
+    );
+  }
+
+  /// Generate offline historical road for a bridge in a background isolate
+  Future<CauDetail> computeCauDetailOfflineAsync({
+    required List<LotteryResult> history,
+    required String position,
+    required DateTime date,
+    int limitDays = 5,
+    bool isLon = true,
+    bool isDb = false,
+    int nhay = 1,
+  }) async {
+    return compute(
+      _computeCauDetailWorker,
+      CauDetailComputeParams(
+        history: history,
+        position: position,
+        date: date,
+        limitDays: limitDays,
+        isLon: isLon,
+        isDb: isDb,
+        nhay: nhay,
+      ),
+    );
+  }
+
+  /// Static worker function for computing CauDetail offline
+  static CauDetail computeCauDetailOfflineStatic(CauDetailComputeParams params) {
+    final history = params.history;
+    final position = params.position;
+    final date = params.date;
+    final limitDays = params.limitDays;
+    final isLon = params.isLon;
+    final isDb = params.isDb;
+
     final parts = position.split('x');
     final vt1 = int.tryParse(parts[0]) ?? 0;
     final vt2 = int.tryParse(parts.length > 1 ? parts[1] : '0') ?? 0;
@@ -751,7 +848,7 @@ class SoiCauService {
   }
 
   /// Extract 107 digits from standard XSMB prize structure
-  List<String> _extract107Digits(LotteryResult result) {
+  static List<String> _extract107Digits(LotteryResult result) {
     final list = <String>[];
 
     void addDigits(String s, int expectedLen) {
@@ -809,4 +906,58 @@ class SoiCauService {
     }
     return list.take(107).toList();
   }
+}
+
+/// Top-level worker for compute() running Soi Cau bridge finding in background isolate
+SoiCauResult _computeSoiCauWorker(SoiCauComputeParams params) {
+  return SoiCauService.computeFromLocalStatic(params);
+}
+
+/// Top-level worker for compute() running Cau Detail in background isolate
+CauDetail _computeCauDetailWorker(CauDetailComputeParams params) {
+  return SoiCauService.computeCauDetailOfflineStatic(params);
+}
+
+/// Parameter container for Soi Cau isolate execution
+class SoiCauComputeParams {
+  final List<LotteryResult> history;
+  final DateTime date;
+  final int limitDays;
+  final int exactLimit;
+  final int nhay;
+  final bool isDb;
+  final bool isLon;
+  final String? searchNum;
+
+  const SoiCauComputeParams({
+    required this.history,
+    required this.date,
+    this.limitDays = 5,
+    this.exactLimit = 0,
+    this.nhay = 1,
+    this.isDb = false,
+    this.isLon = true,
+    this.searchNum,
+  });
+}
+
+/// Parameter container for Cau Detail isolate execution
+class CauDetailComputeParams {
+  final List<LotteryResult> history;
+  final String position;
+  final DateTime date;
+  final int limitDays;
+  final bool isLon;
+  final bool isDb;
+  final int nhay;
+
+  const CauDetailComputeParams({
+    required this.history,
+    required this.position,
+    required this.date,
+    this.limitDays = 5,
+    this.isLon = true,
+    this.isDb = false,
+    this.nhay = 1,
+  });
 }
