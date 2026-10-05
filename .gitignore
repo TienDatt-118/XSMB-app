@@ -42,3 +42,10 @@ xsmb_home.html
 **/xsmb_home.html
 xoso.html
 **/xoso.html
+
+# AI agents & internal plans
+.agents/
+**/.agents/
+*ke_hoach_trien_khai.md
+**/ke_hoach_trien_khai.md
+
